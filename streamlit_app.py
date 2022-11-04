@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
 
 st.title("Kode 24 Salary Streamlit App 💵🤑")
@@ -86,6 +87,8 @@ string = """\
 )
 st.markdown(string)
 
+st.dataframe(df.describe().T)
+
 
 """
 ## Distribution
@@ -97,3 +100,100 @@ but alot of people get more. Therefore we get a long tailed distribution.
 fig = px.histogram(df, x="salary")
 
 st.plotly_chart(fig, use_container_width=True)
+
+df.experience = df.experience.str.replace(",", ".")
+df.experience = df.experience.astype(float)
+
+df.dtypes
+
+dff = (
+    df.groupby("work_situation")
+    .agg({"salary": ["mean", "median", "count"], "experience": ["mean"]})
+    .reset_index()
+)
+
+dff.columns = [
+    "work_situation",
+    "salary_mean",
+    "salary_median",
+    "work_situation_count",
+    "experience_mean",
+]
+
+dff
+
+y = dff.salary_median
+y.index = dff.work_situation
+
+fig = go.Figure()
+
+fig.add_trace(
+    go.Bar(
+        name="Median",
+        x=y.index,
+        y=y,
+        hovertemplate="<i>Salary</i>: NOK %{y:.0f} <br><i>Group</i>: %{x}",
+    )
+)
+
+y = dff.salary_mean
+y.index = dff.work_situation
+
+fig.add_trace(
+    go.Bar(
+        name="Gjennomsnitt",
+        x=y.index,
+        y=y,
+        hovertemplate="<i>Salary</i>: NOK %{y:.0f} <br><i>Group</i>: %{x}",
+    )
+)
+# Text
+fig.update_layout(
+    yaxis_title="Yearly salary in NOK",
+    legend_title="Measures",
+    title="Salary per work situation",
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+fig = px.scatter(
+    dff,
+    x="experience_mean",
+    y="salary_mean",
+    size="work_situation_count",
+    color="work_situation",
+    log_x=True,
+    size_max=100,
+)
+
+# Text
+fig.update_layout(
+    yaxis_title="Mean salary",
+    legend_title="Work situation",
+    title="Scatter of salary mean to years of experience",
+)
+
+st.plotly_chart(fig)
+
+fig = go.Figure(
+    data=[
+        go.Box(
+            name="Salary",
+            x=df.work_situation,
+            y=df.salary,
+        ),
+    ]
+)
+
+fig.update_layout(
+    yaxis_tickformat=",",
+    hoverlabel=dict(
+        font_size=14,
+    ),
+    xaxis_title="Work situation",
+    yaxis_title="Salary",
+    title="Work situation and salaries",
+)
+
+st.plotly_chart(fig)
+# figwrite("work_situation_box")
