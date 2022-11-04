@@ -1,4 +1,4 @@
-# Kode 24 Salary Streamlit App 💵🤑
+# [Kode 24 Salary Streamlit App](https://petrepa-k24salary-streamlit-streamlit-app-4c1io9.streamlit.app/) 💵🤑
 
 [![2022-11-04 12 26 53](https://user-images.githubusercontent.com/30476405/199962051-6a88628c-67d2-4f5a-b379-774f1930346b.gif)](https://petrepa-k24salary-streamlit-streamlit-app-4c1io9.streamlit.app/)
 
