@@ -12,10 +12,10 @@ Inspired by [Einar Eriksen](https://www.linkedin.com/in/einareriksen/)s work.
 
 import numpy as np
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
 import streamlit as st
 from matplotlib import pyplot as plt
+from plotly import express as px
+from plotly import graph_objects as go
 
 st.title("Kode 24 Salary Streamlit App 💵🤑")
 
